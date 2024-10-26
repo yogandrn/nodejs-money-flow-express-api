@@ -1,7 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
+
 const User = require("./user");
 const TypeOfIncome = require("./type_of_income");
+const { isDateBeforeTommorow } = require("../helpers/validate_halper");
+
 module.exports = (sequelize, DataTypes) => {
   class Income extends Model {
     /**
@@ -26,12 +29,66 @@ module.exports = (sequelize, DataTypes) => {
   }
   Income.init(
     {
-      user_id: DataTypes.BIGINT,
-      type_id: DataTypes.BIGINT,
-      title: DataTypes.STRING,
-      description: DataTypes.TEXT,
-      amount: DataTypes.FLOAT,
-      date: DataTypes.DATE,
+      user_id: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        validate: {
+          notNull: { args: true, msg: "ID Pengguna tidak boleh kosong!" },
+          isInt: { args: true, msg: "ID Pengguna harus berupa angka!" },
+        },
+      },
+      type_id: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+        validate: {
+          notNull: { args: true, msg: "ID Tipe Pemasukan tidak boleh kosong!" },
+          isInt: { args: true, msg: "ID Tipe Pemasukan harus berupa angka!" },
+        },
+      },
+      // title: {
+      //   type: DataTypes.TEXT,
+      //   allowNull: false,
+      //   validate: {
+      //     notNull: { args: true, msg: "Nama pemasukan tidak boleh kosong!" },
+      //     notEmpty: { args: true, msg: "Nama pemasukan tidak boleh kosong!" },
+      //     len: {
+      //       args: [3, 255],
+      //       msg: "Jumlah karakter antara 3 sampai 255 karakter.",
+      //     },
+      //     is: {
+      //       args: /^[a-zA-Z0-9.,()%-_*:"\s]*$/,
+      //       msg: "Hanya boleh berisi huruf, angka dan beberapa simbol/karakter!",
+      //     },
+      //   },
+      // },
+      description: { type: DataTypes.TEXT, allowNull: true },
+      amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+          notNull: { args: true, msg: "Tanggal tidak boleh kosong!" },
+          isNumeric: { args: true, msg: "Jumlah nominal harus berupa angka!" },
+        },
+      },
+      date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        validate: {
+          notNull: { args: true, msg: "Tanggal tidak boleh kosong!" },
+          notEmpty: { args: true, msg: "Tanggal tidak boleh kosong!" },
+          isDate: { args: true, msg: "Format tanggal tidak valid!" },
+          isAfter: {
+            args: "1999-12-31",
+            msg: "Tanggal tidak boleh sebelum tahun 2000!",
+          },
+          isBeforeTomorrow(value) {
+            const isValid = isDateBeforeTommorow(value);
+            if (!isValid) {
+              throw new Error("Tanggal tidak boleh melebihi hari ini!");
+            }
+          },
+        },
+      },
     },
     {
       sequelize,

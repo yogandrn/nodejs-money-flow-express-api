@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 const responseFormatter = require("../helpers/response_formatter");
 
 const registerHandler = async (req, res, next) => {
+  const { name, email, phone_number, password } = req.body;
+
   // begin db transaction
   const transaction = await sequelize.transaction();
 
   try {
     // check password format
-    const isValidFormat = User.isPasswordRegexValid(req.body.password);
+    const isValidFormat = User.isPasswordRegexValid(password);
     if (!isValidFormat) {
       await transaction.rollback();
       return responseFormatter(res, 400, [
@@ -17,15 +19,14 @@ const registerHandler = async (req, res, next) => {
     }
 
     // encrypt password
-    const hashedPassword = await bcrypt.hash(req.body.password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     // insert data
     const newUser = await User.create(
       {
-        name: req.body.name,
-        email: req.body.email,
-        phone_number: req.body.phone_number,
-        role_id: req.body.role_id,
+        name,
+        email,
+        phone_number,
         password: hashedPassword,
       },
       { transaction }
@@ -33,7 +34,7 @@ const registerHandler = async (req, res, next) => {
 
     await transaction.commit();
 
-    return responseFormatter(res, 201, "Berhasil registrasi", newUser);
+    return responseFormatter(res, 201, "Berhasil registrasi.", newUser);
   } catch (error) {
     await transaction.rollback();
     next(error);
@@ -42,7 +43,6 @@ const registerHandler = async (req, res, next) => {
 
 const loginHandler = async (req, res, next) => {
   try {
-    console.log(req.body);
     // find user
     const user = await User.findOne({
       where: { email: req.body.email },

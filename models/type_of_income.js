@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
+
+    static async isValidTypeID(id) {
+      const result = await TypeOfIncome.findByPk(id);
+      return result === null ? false : true;
+    }
   }
   TypeOfIncome.init(
     {

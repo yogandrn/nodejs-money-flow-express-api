@@ -21,10 +21,6 @@ module.exports = {
         references: { model: "types_of_income", key: "id" },
         onUpdate: "CASCADE",
       },
-      title: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       description: {
         allowNull: true,
         type: Sequelize.TEXT,
@@ -35,7 +31,7 @@ module.exports = {
       },
       date: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
       },
       createdAt: {
         allowNull: false,

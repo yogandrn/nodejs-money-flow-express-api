@@ -21,10 +21,10 @@ module.exports = {
         references: { model: "types_of_expense", key: "id" },
         onUpdate: "CASCADE",
       },
-      title: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
+      // title: {
+      //   allowNull: false,
+      //   type: Sequelize.STRING,
+      // },
       description: {
         allowNull: true,
         type: Sequelize.TEXT,
@@ -35,7 +35,7 @@ module.exports = {
       },
       date: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
       },
       createdAt: {
         allowNull: false,
