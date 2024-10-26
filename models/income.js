@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const User = require("./user");
+const TypeOfIncome = require("./type_of_income");
 module.exports = (sequelize, DataTypes) => {
   class Income extends Model {
     /**
@@ -9,6 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Income.belongsTo(models.User, {
+        foreignKey: "user_id",
+        targetKey: "id",
+        as: "user",
+      });
+
+      Income.belongsTo(models.TypeOfIncome, {
+        foreignKey: "type_id",
+        targetKey: "id",
+        as: "type",
+      });
     }
   }
   Income.init(

@@ -1,5 +1,8 @@
 "use strict";
 const { Model } = require("sequelize");
+const User = require("./user");
+const TypeOfExpense = require("./type_of_expense");
+
 module.exports = (sequelize, DataTypes) => {
   class Expense extends Model {
     /**
@@ -9,8 +12,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Expense.belongsTo(models.User, {
+        foreignKey: "user_id",
+        targetKey: "id",
+        as: "user",
+      });
+
+      Expense.belongsTo(models.TypeOfExpense, {
+        foreignKey: "type_id",
+        targetKey: "id",
+        as: "type",
+      });
     }
   }
+
   Expense.init(
     {
       user_id: DataTypes.BIGINT,
@@ -28,5 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "expenses",
     }
   );
+
   return Expense;
 };

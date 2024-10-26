@@ -13,8 +13,39 @@ module.exports = (sequelize, DataTypes) => {
   }
   TypeOfExpense.init(
     {
-      name: DataTypes.STRING,
-      thumbnail: DataTypes.STRING,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            args: true,
+            msg: "Nama jenis pengeluaran tidak boleh kosong!",
+          },
+          notEmpty: {
+            args: true,
+            msg: "Nama jenis pengeluaran tidak boleh kosong!",
+          },
+          len: {
+            args: [4, 255],
+            msg: "Nama jenis pengeluaran harus antara 4 sampai 255 karakter.",
+          },
+          is: {
+            args: /^[a-zA-Z\s]*$/,
+            msg: "Nama jenis pengeluaran hanya boleh berisi huruf!",
+          },
+        },
+      },
+      thumbnail: { type: DataTypes.STRING, allowNull: true },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          is: {
+            args: /^[a-zA-Z0-9.,?:%/()\s]*$/,
+            msg: "Deskripsi hanya boleh berisi huruf dan tanda baca!",
+          },
+        },
+      },
     },
     {
       sequelize,
