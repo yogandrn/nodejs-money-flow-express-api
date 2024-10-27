@@ -1,14 +1,14 @@
 const responseFormatter = require("../helpers/response_formatter");
-const { TypeOfIncome, sequelize } = require("../models");
+const { TypeOfExpense, sequelize } = require("../models");
 
-const getTypeIncomeListHandler = async (req, res, next) => {
+const getTypeExpenseListHandler = async (req, res, next) => {
   try {
-    const data = await TypeOfIncome.findAll();
+    const data = await TypeOfExpense.findAll();
 
     return responseFormatter(
       res,
       200,
-      "Berhasil mendapatkan data tipe pemasukan.",
+      "Berhasil mendapatkan data tipe pengeluaran.",
       data
     );
   } catch (error) {
@@ -16,14 +16,14 @@ const getTypeIncomeListHandler = async (req, res, next) => {
   }
 };
 
-const createTypeIncomeHandler = async (req, res, next) => {
+const createTypeExpenseHandler = async (req, res, next) => {
   const { name, thumbnail, description } = req.body;
 
   // db transaction
   const transaction = await sequelize.transaction();
 
   try {
-    const newData = await TypeOfIncome.create(
+    const newData = await TypeOfExpense.create(
       { name, thumbnail, description },
       { transaction }
     );
@@ -34,7 +34,7 @@ const createTypeIncomeHandler = async (req, res, next) => {
     return responseFormatter(
       res,
       201,
-      "Berhasil menambahkan jenis pemasukan baru.",
+      "Berhasil menambahkan jenis pengeluaran baru.",
       newData
     );
   } catch (error) {
@@ -43,7 +43,7 @@ const createTypeIncomeHandler = async (req, res, next) => {
   }
 };
 
-const updateTypeIncomeHandler = async (req, res, next) => {
+const updateTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
   const { name, description, thumbnail } = req.body;
 
@@ -52,7 +52,7 @@ const updateTypeIncomeHandler = async (req, res, next) => {
 
   try {
     // cari data yg di-update
-    const data = await TypeOfIncome.findOne({
+    const data = await TypeOfExpense.findOne({
       where: { id },
       lock: transaction.LOCK.UPDATE,
       transaction,
@@ -63,7 +63,7 @@ const updateTypeIncomeHandler = async (req, res, next) => {
       return responseFormatter(
         res,
         404,
-        "Data jenis pemasukan tidak dapat ditemukan!"
+        "Data jenis pengeluaran tidak dapat ditemukan!"
       );
     }
 
@@ -79,7 +79,7 @@ const updateTypeIncomeHandler = async (req, res, next) => {
     return responseFormatter(
       res,
       200,
-      "Berhasil memperbarui data jenis pemasukan.",
+      "Berhasil memperbarui data jenis pengeluaran.",
       data
     );
   } catch (error) {
@@ -88,7 +88,7 @@ const updateTypeIncomeHandler = async (req, res, next) => {
   }
 };
 
-const deleteTypeIncomeHandler = async (req, res, next) => {
+const deleteTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
 
   // db transaction
@@ -96,7 +96,7 @@ const deleteTypeIncomeHandler = async (req, res, next) => {
 
   try {
     // cari data yg dihapus
-    const data = await TypeOfIncome.findOne({
+    const data = await TypeOfExpense.findOne({
       where: { id },
       lock: transaction.LOCK.UPDATE,
       transaction,
@@ -107,11 +107,11 @@ const deleteTypeIncomeHandler = async (req, res, next) => {
       return responseFormatter(
         res,
         404,
-        "Data jenis pemasukan tidak dapat ditemukan!"
+        "Data jenis pengeluaran tidak dapat ditemukan!"
       );
     }
 
-    await TypeOfIncome.destroy({ where: { id }, transaction });
+    await TypeOfExpense.destroy({ where: { id }, transaction });
 
     // db commit
     await transaction.commit();
@@ -119,7 +119,7 @@ const deleteTypeIncomeHandler = async (req, res, next) => {
     return responseFormatter(
       res,
       200,
-      "Berhasil menghapus data jenis pemasukan."
+      "Berhasil menghapus data jenis pengeluaran."
     );
   } catch (error) {
     await transaction.rollback();
@@ -128,8 +128,8 @@ const deleteTypeIncomeHandler = async (req, res, next) => {
 };
 
 module.exports = {
-  getTypeIncomeListHandler,
-  createTypeIncomeHandler,
-  updateTypeIncomeHandler,
-  deleteTypeIncomeHandler,
+  getTypeExpenseListHandler,
+  createTypeExpenseHandler,
+  updateTypeExpenseHandler,
+  deleteTypeExpenseHandler,
 };

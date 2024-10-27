@@ -6,7 +6,7 @@ const {
 } = require("../controllers/user_controller");
 
 router.get("/", userInfoHandler);
-router.put("/", updateProfileHandler);
+router.put("/profile", updateProfileHandler);
 router.put("/change-password", changePasswordHandler);
 
 module.exports = router;
