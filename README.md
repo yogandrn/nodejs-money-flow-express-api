@@ -15,9 +15,8 @@ Proyek ini adalah RESTful API untuk pencatatan keuangan (pemasukan dan pengeluar
 - **MySQL**: Basis data relasional yang digunakan untuk menyimpan data transaksi keuangan.
 
 ## Instalasi
-1. Clone repositori ini:
-   ```bash
-   git clone <repository-url>
+1. Clone repository ini dengan perintah via CLI atau unduh file `.zip`.
+  
 2. Instalasi package yang diperlukan
    ```bash
    npm install
@@ -25,10 +24,10 @@ Proyek ini adalah RESTful API untuk pencatatan keuangan (pemasukan dan pengeluar
 5. Buat database dengan menjalankan perintah berikut.
    ```bash
    npx sequelize db:create
-7. Jalankan database migration untuk membuat table, kemudian jalankan seeder-nya.
-8. ```bash
+6. Jalankan database migration untuk membuat table, kemudian jalankan seeder-nya.
+   ```bash
    npx sequelize db:migrate
    npx sequelize db:seed:all
-9. Jalankan perintah untuk menjalankan aplikasi di local dengan perintah
+7. Jalankan perintah untuk menjalankan aplikasi di local dengan perintah
     ```bash
     npm run dev
