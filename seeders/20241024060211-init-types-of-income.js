@@ -13,15 +13,28 @@ module.exports = {
      * }], {});
      */
     await queryInterface.bulkInsert("types_of_income", [
-      { name: "Gaji", description: "Pemasukan dari pekerjaan tetap." },
+      {
+        name: "Gaji",
+        description: "Pemasukan dari pekerjaan tetap.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-income-sallary.png",
+      },
       {
         name: "Investasi",
         description: "Pendapatan dari instrumen investasi.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-income-investment.png",
       },
-      { name: "Hadiah", description: "Uang yang diterima sebagai pemberian." },
+      {
+        name: "Hadiah",
+        description: "Uang yang diterima sebagai pemberian.",
+        thumbnail: "http://127.0.0.1:3000/public/uploads/icon-income-gift.png",
+      },
       {
         name: "Lainnya",
         description: "Pemasukan yang tidak termasuk dalam kategori di atas.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-income-others.png",
       },
     ]);
   },

@@ -1,15 +1,10 @@
 "use strict";
 const { Model } = require("sequelize");
-const User = require("./user");
-const TypeOfExpense = require("./type_of_expense");
+
+const { isDateBeforeTommorow } = require("../helpers/validate_halper");
 
 module.exports = (sequelize, DataTypes) => {
   class Expense extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
       Expense.belongsTo(models.User, {
@@ -45,24 +40,16 @@ module.exports = (sequelize, DataTypes) => {
             msg: "ID Tipe Pengeluaran tidak boleh kosong!",
           },
           isInt: { args: true, msg: "ID Tipe Pengeluaran harus berupa angka!" },
+          async isValidType(value) {
+            const isValid = await sequelize.models.TypeOfExpense.isValidTypeID(
+              value
+            );
+            if (!isValid) {
+              throw new Error("Jenis pengeluaran yang dipilih tidak valid!");
+            }
+          },
         },
       },
-      // title: {
-      //   type: DataTypes.TEXT,
-      //   allowNull: false,
-      //   validate: {
-      //     notNull: { args: true, msg: "Nama pengeluaran tidak boleh kosong!" },
-      //     notEmpty: { args: true, msg: "Nama pengeluaran tidak boleh kosong!" },
-      //     len: {
-      //       args: [3, 255],
-      //       msg: "Jumlah karakter antara 3 sampai 255 karakter.",
-      //     },
-      //     is: {
-      //       args: /^[a-zA-Z0-9.,()%-_*:"\s]*$/,
-      //       msg: "Hanya boleh berisi huruf, angka dan beberapa simbol/karakter!",
-      //     },
-      //   },
-      // },
       description: { type: DataTypes.TEXT, allowNull: true },
       amount: {
         type: DataTypes.FLOAT,
@@ -79,6 +66,7 @@ module.exports = (sequelize, DataTypes) => {
           notNull: { args: true, msg: "Tanggal tidak boleh kosong!" },
           notEmpty: { args: true, msg: "Tanggal tidak boleh kosong!" },
           isDate: { args: true, msg: "Format tanggal tidak valid!" },
+
           isAfter: {
             args: "1999-12-31",
             msg: "Tanggal tidak boleh sebelum tahun 2000!",

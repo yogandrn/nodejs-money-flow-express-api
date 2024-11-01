@@ -6,4 +6,10 @@ const isDateBeforeTommorow = (value) => {
   return inputDate.isBefore(tommorrow);
 };
 
-module.exports = { isDateBeforeTommorow };
+const isPasswordRegexValid = (value) => {
+  // validate password format
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*\-_.]{8,255}$/;
+  return regex.test(value);
+};
+
+module.exports = { isDateBeforeTommorow, isPasswordRegexValid };

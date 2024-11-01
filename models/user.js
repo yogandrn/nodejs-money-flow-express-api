@@ -13,12 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
 
-    static isPasswordRegexValid(value) {
-      // validate password format
-      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*-_.,]*$/;
-      return regex.test(value);
-    }
-
     static generateToken({ id, email, access_role }) {
       return jwt.sign({ id, email, access_role }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN || "30d",
@@ -109,6 +103,16 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: "created_at",
       updatedAt: "updated_at",
       tableName: "users",
+
+      // default hide password column
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: {},
+        },
+      },
     }
   );
   return User;

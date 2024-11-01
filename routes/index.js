@@ -6,6 +6,7 @@ const typeExpenseRouter = require("./type_of_expense");
 const authRouter = require("./auth");
 const userRouter = require("./user");
 const incomeRouter = require("./income");
+const expenseRouter = require("./expense");
 
 // middleware
 const authUser = require("../middleware/auth_user");
@@ -16,6 +17,7 @@ router.use("/api/v1/auth", authRouter);
 // middleware auth user (harus login dengan token)
 router.use("/api/v1/user", authUser, userRouter);
 router.use("/api/v1/income", authUser, incomeRouter);
+router.use("/api/v1/expense", authUser, expenseRouter);
 
 // middleware auth admin (harus login dengan token dan access nya ADMIN/ROOT)
 router.use("/api/v1/types/income", authAdmin, typeIncomeRouter);

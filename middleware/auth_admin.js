@@ -1,27 +1,36 @@
 const jwt = require("jsonwebtoken");
 const responseFormatter = require("../helpers/response_formatter");
 
-module.exports = function authenticateToken(req, res, next) {
+module.exports = async function authenticateToken(req, res, next) {
   try {
     // Mengambil token dari header Authorization
     const token = req.headers["authorization"]?.split(" ")[1];
     const secretKey = process.env.JWT_SECRET || "secret";
 
-    if (!token) return responseFormatter(res, 401, "Unauthenticated");
+    if (!token)
+      next(responseFormatter(res, 401, "Access Token tidak ditemukan!"));
 
     const decoded = jwt.verify(token, secretKey);
 
     // jika token tidak valid
     if (!decoded) {
-      return responseFormatter(res, 401, "Unauthenticated");
+      throw new Error("Invalid Token");
+    }
+
+    // cari user
+    const user = await User.findByPk(decoded.id);
+    if (!user) {
+      throw new Error("Not Found");
     }
 
     // jika access nya bukan ADMIN / ROOT
-    if (decoded.access_role === "USER") {
-      return responseFormatter(res, 403, "Access denied");
+    if (user.access_role === "USER") {
+      throw new Error("Forbidden");
     }
 
-    req.user = decoded;
+    const { id, email, access_role } = user;
+    req.user = { id, email, access_role };
+
     next();
   } catch (error) {
     next(error);

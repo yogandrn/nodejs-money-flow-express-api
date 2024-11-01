@@ -19,10 +19,12 @@ const getTypeExpenseListHandler = async (req, res, next) => {
 const createTypeExpenseHandler = async (req, res, next) => {
   const { name, thumbnail, description } = req.body;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
     const newData = await TypeOfExpense.create(
       { name, thumbnail, description },
       { transaction }
@@ -38,7 +40,7 @@ const createTypeExpenseHandler = async (req, res, next) => {
       newData
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };
@@ -47,10 +49,12 @@ const updateTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
   const { name, description, thumbnail } = req.body;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
     // cari data yg di-update
     const data = await TypeOfExpense.findOne({
       where: { id },
@@ -83,7 +87,7 @@ const updateTypeExpenseHandler = async (req, res, next) => {
       data
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };
@@ -91,10 +95,12 @@ const updateTypeExpenseHandler = async (req, res, next) => {
 const deleteTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
     // cari data yg dihapus
     const data = await TypeOfExpense.findOne({
       where: { id },
@@ -122,7 +128,7 @@ const deleteTypeExpenseHandler = async (req, res, next) => {
       "Berhasil menghapus data jenis pengeluaran."
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };

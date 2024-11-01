@@ -16,14 +16,19 @@ module.exports = {
       {
         name: "Kebutuhan Pokok",
         description: "Makanan, tempat tinggal, dan kebutuhan harian lainnya.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-basic-needs.png",
       },
       {
         name: "Tagihan",
         description: "Biaya berlangganan atau cicilan.",
+        thumbnail: "http://127.0.0.1:3000/public/uploads/icon-expense-bill.png",
       },
       {
         name: "Hiburan",
         description: "Pengeluaran untuk kebutuan sekunder",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-lifestyle.png",
       },
       {
         name: "Tabungan dan Investasi",
@@ -32,10 +37,14 @@ module.exports = {
       {
         name: "Pengeluaran Darurat",
         description: "Pengeluaran untuk keperluan mendesak.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-emergency.png",
       },
       {
         name: "Lainnya",
         description: "Pengeluaran yang tidak termasuk dalam kategori di atas.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-others.png",
       },
     ]);
   },

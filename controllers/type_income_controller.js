@@ -19,10 +19,13 @@ const getTypeIncomeListHandler = async (req, res, next) => {
 const createTypeIncomeHandler = async (req, res, next) => {
   const { name, thumbnail, description } = req.body;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
+    // create new data
     const newData = await TypeOfIncome.create(
       { name, thumbnail, description },
       { transaction }
@@ -38,7 +41,7 @@ const createTypeIncomeHandler = async (req, res, next) => {
       newData
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };
@@ -47,10 +50,12 @@ const updateTypeIncomeHandler = async (req, res, next) => {
   const { id } = req.params;
   const { name, description, thumbnail } = req.body;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
     // cari data yg di-update
     const data = await TypeOfIncome.findOne({
       where: { id },
@@ -83,7 +88,7 @@ const updateTypeIncomeHandler = async (req, res, next) => {
       data
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };
@@ -91,10 +96,12 @@ const updateTypeIncomeHandler = async (req, res, next) => {
 const deleteTypeIncomeHandler = async (req, res, next) => {
   const { id } = req.params;
 
-  // db transaction
-  const transaction = await sequelize.transaction();
+  let transaction;
 
   try {
+    // db transaction
+    transaction = await sequelize.transaction();
+
     // cari data yg dihapus
     const data = await TypeOfIncome.findOne({
       where: { id },
@@ -122,7 +129,7 @@ const deleteTypeIncomeHandler = async (req, res, next) => {
       "Berhasil menghapus data jenis pemasukan."
     );
   } catch (error) {
-    await transaction.rollback();
+    if (transaction) await transaction.rollback();
     next(error);
   }
 };
