@@ -33,6 +33,14 @@ module.exports = {
       {
         name: "Tabungan dan Investasi",
         description: "Alokasi dana untuk manabung atau investasi.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-investment.png",
+      },
+      {
+        name: "Donasi dan Berbagi",
+        description: "Pengeluaran untuk berbagi dengan orang lain.",
+        thumbnail:
+          "http://127.0.0.1:3000/public/uploads/icon-expense-donation.png",
       },
       {
         name: "Pengeluaran Darurat",
