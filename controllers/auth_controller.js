@@ -1,7 +1,7 @@
 const { User, sequelize } = require("../models");
 const bcrypt = require("bcrypt");
 const responseFormatter = require("../helpers/response_formatter");
-const { isPasswordRegexValid } = require("../helpers/validate_halper");
+const { isPasswordRegexValid } = require("../helpers/validate_helper");
 
 const registerHandler = async (req, res, next) => {
   const { name, email, phone_number, password } = req.body;

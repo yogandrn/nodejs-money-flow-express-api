@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { User } = require("../models");
 const responseFormatter = require("../helpers/response_formatter");
 
 module.exports = async function authenticateToken(req, res, next) {

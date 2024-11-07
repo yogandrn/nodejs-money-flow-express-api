@@ -1,10 +1,12 @@
 const bcrypt = require("bcrypt");
-const fs = require("fs");
 const path = require("path");
 
 const { User, sequelize } = require("../models");
 const responseFormatter = require("../helpers/response_formatter");
-const { isPasswordRegexValid } = require("../helpers/validate_halper");
+const {
+  isPasswordRegexValid,
+  isValidFileSize,
+} = require("../helpers/validate_helper");
 
 const userInfoHandler = async (req, res, next) => {
   try {
@@ -61,17 +63,14 @@ const updateProfileHandler = async (req, res, next) => {
 const uploadProfilePictureHandler = async (req, res, next) => {
   try {
     const image = req.file;
-    const maxFileSize = 1024 * 1024 * 1; // 1 MB
 
     // validate file exist
     if (!image) {
-      return responseFormatter(res, 400, "File image tidak boleh kosong!");
+      return responseFormatter(res, 400, ["File image tidak boleh kosong!"]);
     }
 
-    // validate file size
-    if (image.size > maxFileSize) {
-      fs.promises.unlink(`${image.destination}/${image.filename}`);
-      return responseFormatter(res, 400, "Ukuran file terlalu besar!");
+    if (!isValidFileSize(image)) {
+      return responseFormatter(res, 400, ["Ukuran file terlalu besar!"]);
     }
 
     // generate file path

@@ -11,11 +11,9 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const validFormat = FileTypes[file.mimetype];
 
-    let errors = validFormat
-      ? null
-      : new Error("Jenis file yang diunggah tidak valid!");
+    let errors = !validFormat ? new Error("Invalid Filetype") : null;
 
-    cb(errors, "public/uploads");
+    cb(errors, `${process.env.FILESYSTEM_DISK}`);
   },
   filename: function (req, file, cb) {
     const fileExtension = FileTypes[file.mimetype];

@@ -1,4 +1,7 @@
+const fs = require("fs");
+
 const responseFormatter = require("../helpers/response_formatter");
+const { isValidFileSize } = require("../helpers/validate_helper");
 const { TypeOfExpense, sequelize } = require("../models");
 
 const getTypeExpenseListHandler = async (req, res, next) => {
@@ -17,21 +20,32 @@ const getTypeExpenseListHandler = async (req, res, next) => {
 };
 
 const createTypeExpenseHandler = async (req, res, next) => {
-  const { name, thumbnail, description } = req.body;
+  const { name, description } = req.body;
+  const image = req.file;
 
-  let transaction;
+  // validate file exist
+  if (!image) {
+    return responseFormatter(res, 400, ["File image tidak boleh kosong!"]);
+  }
+
+  // validate file size
+  if (!isValidFileSize(image)) {
+    throw new Error("Max File Size");
+  }
+
+  // generate file path
+  const pathName = `${req.protocol}://${req.get("host")}/${image.destination}/${
+    image.filename
+  }`;
 
   try {
-    // db transaction
-    transaction = await sequelize.transaction();
-
-    const newData = await TypeOfExpense.create(
-      { name, thumbnail, description },
-      { transaction }
-    );
-
-    // db commit
-    await transaction.commit();
+    // create new data with db transaction
+    const newData = await sequelize.transaction(async (transaction) => {
+      return await TypeOfExpense.create(
+        { name, description, thumbnail: pathName },
+        { transaction }
+      );
+    });
 
     return responseFormatter(
       res,
@@ -40,54 +54,66 @@ const createTypeExpenseHandler = async (req, res, next) => {
       newData
     );
   } catch (error) {
-    if (transaction) await transaction.rollback();
     next(error);
   }
 };
 
 const updateTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
-  const { name, description, thumbnail } = req.body;
-
-  let transaction;
+  const { name, description } = req.body;
 
   try {
-    // db transaction
-    transaction = await sequelize.transaction();
+    // update data with db transaction
+    const result = await sequelize.transaction(async (transaction) => {
+      // cari data yg di-update
+      const data = await TypeOfExpense.findOne({
+        where: { id },
+        lock: transaction.LOCK.UPDATE,
+        transaction,
+      });
 
-    // cari data yg di-update
-    const data = await TypeOfExpense.findOne({
-      where: { id },
-      lock: transaction.LOCK.UPDATE,
-      transaction,
+      if (!data) {
+        throw new Error("Not found");
+      }
+
+      // jika ada file yang di unggah
+      if (req.file) {
+        const image = req.file;
+        // validate file size
+        if (!isValidFileSize(image)) {
+          throw new Error("Max File Size");
+        }
+
+        // generate file path
+        const pathName = `${req.protocol}://${req.get("host")}/${
+          image.destination
+        }/${image.filename}`;
+
+        // delete old file
+        const fileName = data.thumbnail.split("/").pop();
+        const fileToDelete = `${process.env.FILESYSTEM_DISK}/${fileName}`;
+        fs.promises.unlink(`${fileToDelete}`);
+
+        // change file path
+        data.thumbnail = pathName;
+      }
+
+      data.name = name || data.name;
+      data.description = description || data.description;
+
+      // save changes
+      await data.save({ transaction });
+
+      return data;
     });
-
-    if (!data) {
-      await transaction.rollback();
-      return responseFormatter(
-        res,
-        404,
-        "Data jenis pengeluaran tidak dapat ditemukan!"
-      );
-    }
-
-    // update data
-    data.name = name;
-    data.thumbnail = thumbnail;
-    data.description = description;
-    await data.save({ transaction });
-
-    // db commit
-    await transaction.commit();
 
     return responseFormatter(
       res,
       200,
       "Berhasil memperbarui data jenis pengeluaran.",
-      data
+      result
     );
   } catch (error) {
-    if (transaction) await transaction.rollback();
     next(error);
   }
 };
@@ -95,32 +121,29 @@ const updateTypeExpenseHandler = async (req, res, next) => {
 const deleteTypeExpenseHandler = async (req, res, next) => {
   const { id } = req.params;
 
-  let transaction;
-
   try {
-    // db transaction
-    transaction = await sequelize.transaction();
+    // delete data with db transaction
+    await sequelize.transaction(async (transaction) => {
+      // find data to delete
+      const data = await TypeOfExpense.findOne({
+        where: { id },
+        lock: transaction.LOCK.UPDATE,
+        transaction,
+      });
 
-    // cari data yg dihapus
-    const data = await TypeOfExpense.findOne({
-      where: { id },
-      lock: transaction.LOCK.UPDATE,
-      transaction,
+      if (!data) {
+        throw new Error("Not found");
+      }
+
+      // delete file thumbnail
+      if (data.thumbnail !== null) {
+        const fileName = data.thumbnail.split("/").pop();
+        const fileToDelete = `${process.env.FILESYSTEM_DISK}/${fileName}`;
+        fs.promises.unlink(`${fileToDelete}`);
+      }
+
+      await TypeOfExpense.destroy({ where: { id }, transaction });
     });
-
-    if (!data) {
-      await transaction.rollback();
-      return responseFormatter(
-        res,
-        404,
-        "Data jenis pengeluaran tidak dapat ditemukan!"
-      );
-    }
-
-    await TypeOfExpense.destroy({ where: { id }, transaction });
-
-    // db commit
-    await transaction.commit();
 
     return responseFormatter(
       res,
@@ -128,7 +151,6 @@ const deleteTypeExpenseHandler = async (req, res, next) => {
       "Berhasil menghapus data jenis pengeluaran."
     );
   } catch (error) {
-    if (transaction) await transaction.rollback();
     next(error);
   }
 };

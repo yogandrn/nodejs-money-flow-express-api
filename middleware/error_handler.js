@@ -5,6 +5,8 @@ module.exports = function errorHandler(err, req, res, next) {
   let message = [];
   let status_code = 500;
 
+  // console.log(err);
+
   switch (err.name) {
     case "SequelizeValidationError":
       status_code = 400;
@@ -41,6 +43,16 @@ module.exports = function errorHandler(err, req, res, next) {
         case "INVALID TOKEN":
           status_code = 401;
           message = "Access Token tidak valid atau sudah kedaluarsa!";
+          break;
+
+        case "MAX FILE SIZE":
+          status_code = 400;
+          message = ["Ukuran file yang diunggah terlalu besar!"];
+          break;
+
+        case "INVALID FILETYPE":
+          status_code = 400;
+          message = ["Jenis file yang diunggah tidak valid!"];
           break;
 
         default:

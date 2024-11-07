@@ -237,7 +237,7 @@
 								{
 									"key": "image",
 									"type": "file",
-									"src": "/C:/Users/Yoga Andrian/Downloads/linkedin.png"
+									"src": "/C:/Users/Yoga Andrian/Downloads/macbook-m2-4.png"
 								}
 							]
 						},
@@ -289,7 +289,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type_id\" : 3,\r\n    \"description\" : \"Max Win\",\r\n    \"amount\" : 5000000,\r\n    \"date\" : \"2024-10-30\"\r\n}",
+							"raw": "{\r\n    \"type_id\" : 3,\r\n    \"description\" : \"Hadiah Natal\",\r\n    \"amount\" : 500000,\r\n    \"date\" : \"2024-11-05\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -519,7 +519,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"type_id\" : 2,\r\n    \"description\" : \"BPJS Nopember\",\r\n    \"amount\" : 140000,\r\n    \"date\" : \"2024-11-1\"\r\n}",
+							"raw": "{\r\n    \"type_id\" : 17,\r\n    \"description\" : \"Cicilan\",\r\n    \"amount\" : 2850000,\r\n    \"date\" : \"2024-11-05\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -764,13 +764,24 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"New Income Type\",\r\n    \"description\" : \"lorem ipsum cihuy\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New Income Type",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "lorem ipsum dolor",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Yoga Andrian/Downloads/macbook-m2-4.png"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/types/income",
@@ -788,7 +799,7 @@
 					"response": []
 				},
 				{
-					"name": "Update IncomeType",
+					"name": "Update Income Type",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -803,16 +814,27 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"New Income Types\",\r\n    \"description\" : \"lorem ipsum dolor sit amet\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "New Income Types",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "lorem ipsum dolors",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Yoga Andrian/Downloads/iphone-15-pro-2.jpg"
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/types/income/5",
+							"raw": "{{baseUrl}}/api/v1/types/income/7",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -821,7 +843,7 @@
 								"v1",
 								"types",
 								"income",
-								"5"
+								"7"
 							]
 						}
 					},
@@ -852,7 +874,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/types/income/5",
+							"raw": "{{baseUrl}}/api/v1/types/income/7",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -861,7 +883,7 @@
 								"v1",
 								"types",
 								"income",
-								"5"
+								"7"
 							]
 						}
 					},
@@ -903,7 +925,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Income Type",
+					"name": "Create Expense Type",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -918,13 +940,24 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"New Type Expense\",\r\n    \"description\" : \"lorem ipsum\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Kebutuhan Pokok",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Makanan, tempat tinggal, dan kebutuhan harian lainnya.",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/D:/Projects/NodeJs/express-cash-management/public/uploads/icon-expense-basic-needs.png"
 								}
-							}
+							]
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/types/expense",
@@ -942,7 +975,7 @@
 					"response": []
 				},
 				{
-					"name": "Update IncomeType",
+					"name": "Update Expense Type",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -957,16 +990,27 @@
 						"method": "PUT",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\" : \"New Type Expense\",\r\n    \"description\" : \"lorem ipsum dolor sit amet\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Kebutuhan Pokoks",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Makanan, tempat tinggal, dan kebutuhan harian lainnya.",
+									"type": "text"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/D:/Projects/NodeJs/express-cash-management/public/uploads/icon-expense-basic-needs.png"
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/types/expense/7",
+							"raw": "{{baseUrl}}/api/v1/types/expense/1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -975,14 +1019,14 @@
 								"v1",
 								"types",
 								"expense",
-								"7"
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete Type Income",
+					"name": "Delete Expense Type",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1006,7 +1050,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/types/expense/7",
+							"raw": "{{baseUrl}}/api/v1/types/expense/1",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1015,7 +1059,135 @@
 								"v1",
 								"types",
 								"expense",
-								"7"
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Analytic",
+			"item": [
+				{
+					"name": "Daily",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/analytic/daily",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"analytic",
+								"daily"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Weekly",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/analytic/weekly?type=income",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"analytic",
+								"weekly"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "income"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Monthly",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/analytic/monthly",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"analytic",
+								"monthly"
 							]
 						}
 					},

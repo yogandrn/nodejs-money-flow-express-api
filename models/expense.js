@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 
-const { isDateBeforeTommorow } = require("../helpers/validate_halper");
+const { isDateBeforeTommorow } = require("../helpers/validate_helper");
 
 module.exports = (sequelize, DataTypes) => {
   class Expense extends Model {
